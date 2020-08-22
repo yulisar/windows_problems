@@ -1,0 +1,38 @@
+Low disk space after filling up C:\Windows\Temp with .evtx and .txt files
+
+This solution described here has worked for me (tested after several reboots). However, I should stress that a web search reveals that hundreds are having problems with C:\Windows\Temp filling up with garbage, especially with Windows 10 v1803. Exact causes appear to be variable so my solution will only apply in some cases. Feel free to add additional solutions...but keep them related specifically to C:\Windows\Temp.
+
+My problem appears to be related to the in-built Windows Store app and the AppX Deployment Service. I disabled both as follows:
+
+Disable the Store application using Group Policy Editor
+
+Note: You may need Administrative privileges for this.
+
+    WIN+R and type gpedit.msc
+    User Configuration > Administrative Templates > Windows Components > Store
+    Enable Turn off the Store application
+
+Disable the AppX Deployment Service using Registry Editor
+
+Note: Usual proviso here is to be careful when editing the registry! Changing this manually using services.msc does not work (Windows resets it to Manual or does not allow you to change it at all)
+
+    WIN+R and type regedit.exe
+    Navigate to HKLM\SYSTEM\CurrentControlSet\Services\AppXSvc
+    Change Start to 4
+    This sets the service to Disabled
+
+Reboot Windows and clear out C:\Windows\Temp
+
+    Reboot Windows
+    Open File Explorer and navigate to C:\Windows\Temp
+    You may be asked for Administrative consent to enter this folder, agree to this
+    Select all and choose Delete
+    If Windows cannot delete a file because it is in use, just skip
+
+The above steps worked for me and so far no new files have been added to C:\Windows\Temp.
+
+
+ref:
+
+https://superuser.com/questions/1371229/low-disk-space-after-filling-up-c-windows-temp-with-evtx-and-txt-files
+
